@@ -22,7 +22,7 @@ const reactionSchema = new Schema(
 
     username: {
       type: String,
-      requires: true,
+      required: true,
     },
   },
   {
