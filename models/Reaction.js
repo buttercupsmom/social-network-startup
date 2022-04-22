@@ -4,8 +4,8 @@ const dateFormat = require("./../utils/dateFormat");
 const reactionSchema = new Schema(
   {
     reactionId: {
-      type: Schema.Types.ObjectIds,
-      default: () => new Types.ObjectIds(),
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
     },
 
     reactionBody: {
