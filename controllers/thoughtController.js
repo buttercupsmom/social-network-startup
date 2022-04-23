@@ -25,9 +25,17 @@ const controllers = {
   },
   // post to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
   createThought(req, res) {
-    Thought.create({ _id: req.params.thoughtId })
-      .then((thought) => res.json(thought))
+    Thought.create(req.body)
+      .then((thought) => {
+        return User.findOneAndUpdate(
+          { _id: req.body.userId },
+          { $push: { thoughts: thought._id } },
+          { new: true }
+        );
+      })
+      .then((user) => res.json(user))
       .catch((err) => {
+        console.log(err);
         return res.status(500).json(err);
       });
   },
