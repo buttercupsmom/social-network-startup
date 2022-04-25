@@ -74,7 +74,7 @@ const controllers = {
     )
       .then((reaction) =>
         !reaction
-          ? res.status(404).json({ message: "No reaction found with that ID!" })
+          ? res.status(404).json({ message: "Reaction added." })
           : res.json(reaction)
       )
       .catch((err) => res.status(500).json(err));
@@ -82,13 +82,16 @@ const controllers = {
 
   //  DELETE to pull and remove a reaction by the reaction's reactionId value
   deleteReaction(req, res) {
-    Thought.findOneAndDelete({ _id: req.params.reactionId })
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { _id: req.body.reactionId } } },
+      { runValidators: true, new: true }
+    )
       .then((reaction) =>
         !reaction
           ? res.status(404).json({ message: "No reaction found with that Id." })
-          : Thought.deleteMany({ _id: { $in: reaction.thought } })
+          : res.json(reaction)
       )
-      .then(() => res.json({ message: "Reaction has been deleted." }))
       .catch((err) => res.status(500).json(err));
   },
 };
