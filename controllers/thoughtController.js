@@ -70,7 +70,7 @@ const controllers = {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
-      { runValidators: true, new: true }
+      { new: true }
     )
       .then((reaction) =>
         !reaction
@@ -84,12 +84,12 @@ const controllers = {
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { reactions: { _id: req.body.reactionId } } },
-      { runValidators: true, new: true }
+      { $pull: { reactions: { _id: req.params.reactionId } } },
+      { new: true }
     )
       .then((reaction) =>
         !reaction
-          ? res.status(404).json({ message: "No reaction found with that Id." })
+          ? res.status(404).json({ message: "No reaction found with that id." })
           : res.json(reaction)
       )
       .catch((err) => res.status(500).json(err));
