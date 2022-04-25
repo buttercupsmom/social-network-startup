@@ -1,9 +1,7 @@
-// const res = require("express/lib/response");
 const { Thought, User } = require("../models");
-// const reactionSchema = require("../models/Reaction");
 
 const controllers = {
-  // get all thoughts
+  // GET all thoughts
   getThoughts(req, res) {
     Thought.find()
       .then((thoughtData) => {
@@ -13,7 +11,7 @@ const controllers = {
         res.status(500).json(err);
       });
   },
-  // get a thought by id
+  // GET a thought by id
   getOneThoughts(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .then((thought) =>
@@ -23,7 +21,7 @@ const controllers = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // post to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
+  // POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
   createThought(req, res) {
     Thought.create(req.body)
       .then((thought) => {

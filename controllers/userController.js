@@ -1,7 +1,8 @@
+const res = require("express/lib/response");
 const { User, Thought } = require("../models");
 
 const controllers = {
-  // get all users
+  // GET all users
   getUsers(req, res) {
     User.find()
       .then((userData) => {
@@ -11,7 +12,7 @@ const controllers = {
         res.status(500).json(err);
       });
   },
-  // create user
+  // POST to create user
   createUser(req, res) {
     User.create(req.body)
       .then((userInfo) => res.json(userInfo))
@@ -19,7 +20,7 @@ const controllers = {
         res.status(500).json(err);
       });
   },
-  // get user by id
+  // GET user by id
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       .select("-__v")
@@ -34,7 +35,7 @@ const controllers = {
         res.status(500).json(err);
       });
   },
-  // update user by id
+  // PUT to update user by id
   updateUser(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
@@ -50,33 +51,44 @@ const controllers = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // delete user by id
+  // DELETE user by id
   deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.userId })
+    User.findOneAndRemove({ _id: req.params.userId })
       .then(
         (user) => !user,
         res.status(404).json({ message: "No user found with that id." })
       )
-      .then(() => res.json({ message: "User removed." }))
+      .then(() => res.status({ message: "User removed." }))
       .catch((err) => res.status(500).json(err));
   },
-  // BONUS: add friend
+  // BONUS: POST to add to friend list
   addFriend(req, res) {
-    console.log("You are adding an friend");
-    console.log(req.body);
     User.findOneAndUpdate(
       { _id: req.params.userId },
       { $addToSet: { friends: req.params.friendId } },
-      { new: true }
+      { runValidators: true, new: true }
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No user found with that ID!" })
+          ? res.status(404).json({ message: "Friend added to list!" })
           : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
   },
-  // BONUS: DELETE friend
+  // BONUS: DELETE to remove friend from friend list
+  deleteFriend(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friends: req.params.friendId } },
+      { runValidators: true, new: true }
+    )
+      .then((friend) =>
+        !friend
+          ? res.status(404).json({ message: "No friend found with that id." })
+          : res.json(friend)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
 };
 
 module.exports = controllers;
