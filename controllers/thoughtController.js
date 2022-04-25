@@ -72,8 +72,8 @@ const controllers = {
     console.log("You added a reaction");
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $addToSet: { reaction: req.params.reactionId } },
-      { new: true }
+      { $addToSet: { reactions: req.body } },
+      { runValidators: true, new: true }
     )
       .then((reaction) =>
         !reaction
@@ -84,16 +84,16 @@ const controllers = {
   },
 
   // get reaction by id
-  getReaction(req, res) {
-    Reaction.findOne({ _id: req.params.reactionId })
-      .select("-__v")
-      .then((reaction) =>
-        !reaction
-          ? res.status(404).json({ message: "no reaction with that id" })
-          : res.json(reaction)
-      )
-      .catch((err) => res.status(500).json(err));
-  },
+  // getReaction(req, res) {
+  //   Reaction.findOne({ _id: req.params.reactionId })
+  //     .select("-__v")
+  //     .then((reaction) =>
+  //       !reaction
+  //         ? res.status(404).json({ message: "no reaction with that id" })
+  //         : res.json(reaction)
+  //     )
+  //     .catch((err) => res.status(500).json(err));
+  // },
 };
 
 module.exports = controllers;
