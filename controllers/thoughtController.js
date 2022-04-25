@@ -1,5 +1,6 @@
 // const res = require("express/lib/response");
 const { Thought, User } = require("../models");
+// const reactionSchema = require("../models/Reaction");
 
 const controllers = {
   // get all thoughts
@@ -12,14 +13,13 @@ const controllers = {
         res.status(500).json(err);
       });
   },
-  // get a thought
+  // get a thought by id
   getOneThoughts(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
-      .select("-__v")
-      .then((thoughtOne) =>
-        !Thought
+      .then((thought) =>
+        !thought
           ? res.status(404).json({ message: "No thought with that id." })
-          : res.json(thoughtOne)
+          : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -38,6 +38,61 @@ const controllers = {
         console.log(err);
         return res.status(500).json(err);
       });
+  },
+
+  // PUT to update a thought by its _id
+  updateThought(req, res) {
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
+      .then((newThought) =>
+        !newThought
+          ? res.status(404).json({ message: "No thought with this id." })
+          : res.json(newThought)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+
+  // DELETE to remove a thought by its _id
+  deleteThought(req, res) {
+    Thought.findOneAndDelete({ _id: req.params.thoughtId })
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({ message: "No thought with that ID." })
+          : User.deleteMany({ _id: { $in: thought.user } })
+      )
+      .then(() => res.json({ message: "Thought deleted" }))
+      .catch((err) => res.status(500).json(err));
+  },
+
+  // POST to create a reaction stored in a single thoughts reactions array field
+  createReaction(req, res) {
+    console.log("You added a reaction");
+    Thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $addToSet: { reaction: req.params.reactionId } },
+      { new: true }
+    )
+      .then((reaction) =>
+        !reaction
+          ? res.status(404).json({ message: "No reaction found with that ID!" })
+          : res.json(reaction)
+      )
+      .catch((err) => res.status(500).json(err));
+  },
+
+  // get reaction by id
+  getReaction(req, res) {
+    Reaction.findOne({ _id: req.params.reactionId })
+      .select("-__v")
+      .then((reaction) =>
+        !reaction
+          ? res.status(404).json({ message: "no reaction with that id" })
+          : res.json(reaction)
+      )
+      .catch((err) => res.status(500).json(err));
   },
 };
 
