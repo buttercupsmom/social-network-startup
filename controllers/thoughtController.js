@@ -69,7 +69,6 @@ const controllers = {
 
   // POST to create a reaction stored in a single thoughts reactions array field
   createReaction(req, res) {
-    console.log("You added a reaction");
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
       { $addToSet: { reactions: req.body } },
@@ -83,17 +82,17 @@ const controllers = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // get reaction by id
-  // getReaction(req, res) {
-  //   Reaction.findOne({ _id: req.params.reactionId })
-  //     .select("-__v")
-  //     .then((reaction) =>
-  //       !reaction
-  //         ? res.status(404).json({ message: "no reaction with that id" })
-  //         : res.json(reaction)
-  //     )
-  //     .catch((err) => res.status(500).json(err));
-  // },
+  //  DELETE to pull and remove a reaction by the reaction's reactionId value
+  deleteReaction(req, res) {
+    Thought.findOneAndDelete({ _id: req.params.reactionId })
+      .then((reaction) =>
+        !reaction
+          ? res.status(404).json({ message: "No reaction found with that Id." })
+          : Thought.deleteMany({ _id: { $in: reaction.thought } })
+      )
+      .then(() => res.json({ message: "Reaction has been deleted." }))
+      .catch((err) => res.status(500).json(err));
+  },
 };
 
 module.exports = controllers;
