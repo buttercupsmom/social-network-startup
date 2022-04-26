@@ -70,7 +70,7 @@ Rachel Haddad
 
 ## Links
 
-- Here is the repo: [Repo](https://github.com/buttercupsmom/sql_employee_tracker)
+- Here is the repo: [Repo](https://github.com/buttercupsmom/social-network-startup)
 
 ## Questions
 
