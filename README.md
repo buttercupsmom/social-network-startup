@@ -8,6 +8,7 @@
 - [Installation](./README.md#installation)
 - [Usage](./README.md#usage)
 - [Screenshots](./README.md#screenshots)
+- [Demos](./README.md#demos)
 - [License](./README.md#license)
 - [Author](./README.md#author)
 - [Links](./README.md#links)
@@ -15,11 +16,11 @@
 
 ## Description
 
-Backend for a social network API so that users and their thoughts can be created and well as removed. They are also able to add friends, reactions, then remove if they choose.
+Backend for a social network API so that users can share their thoughts, react to freind's thoughts and create a friend list. For the routing of this application, I used `Express.js`. For the database, `MongoDB` along with `Mongoose` for the models.
 
 ## Installation
 
-In your terminal run
+Open integrated terminal in `server.js` then
 
 ```
 $npm install
@@ -37,9 +38,27 @@ $nodemon server
 
 ## Screenshots
 
-![GeneratedHtml](./assets/Screen%20Shot%202022-03-13%20at%2010.24.07%20PM.png)
+### GET route for all users
 
-- Here is the instructional demo video: [Google Drive]()
+![GET route for all users](./assets/images/Screen%20Shot%202022-04-25%20at%209.10.01%20PM.png)
+
+### GET route for all thoughts
+
+![GET route for all thoughts](./assets/images/Screen%20Shot%202022-04-25%20at%209.10.11%20PM.png)
+
+### POST route for adding a new user
+
+![POST route for adding a new user](./assets/images/Screen%20Shot%202022-04-25%20at%209.09.45%20PM.png)
+
+### PUT route for updating an existing thought
+
+![PUT route for updating an existing thought](./assets/images/Screen%20Shot%202022-04-25%20at%209.07.42%20PM.png)
+
+## Demos:
+
+- [Part I](https://drive.google.com/file/d/11Ffqj0oj_-P-K_p6bAab8g95_p_muQyf/view?usp=sharing)
+- [Part II](https://drive.google.com/file/d/13xQSDfItdwusDoeVRv4qNmyLKT6O8kBQ/view?usp=sharing)
+- [Part III](https://drive.google.com/file/d/1Q4AARnWxYQHu8K-AnXqj-Zr9iJ3hj_Qn/view?usp=sharing)
 
 ## License
 
